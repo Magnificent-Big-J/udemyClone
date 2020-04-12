@@ -13,12 +13,12 @@
                     <br><br><br>
                     @auth
                       @hasStartedSeries($series)
-                          <a href="{{ route('series.learning', $series->slug) }}" class="btn btn-lg btn-primary mr-16 btn-round">CONTINUE LEARNING</a>                        
+                          <a href="{{ route('series.learning', $series->slug) }}" class="btn btn-lg btn-primary mr-16 btn-round">CONTINUE LEARNING</a>
                       @else
-                          <a href="{{ route('series.learning', $series->slug) }}" class="btn btn-lg btn-primary mr-16 btn-round">START LEARNING</a>                      
+                          <a href="{{ route('series.learning', $series->slug) }}" class="btn btn-lg btn-primary mr-16 btn-round">START LEARNING</a>
                       @endhasStartedSeries
-                    @else 
-                          <a href="{{ route('series.learning', $series->slug) }}"  class="btn btn-lg btn-primary mr-16 btn-round">START LEARNING</a>                    
+                    @else
+                          <a href="{{ route('series.learning', $series->slug) }}"  class="btn btn-lg btn-primary mr-16 btn-round">START LEARNING</a>
                     @endauth
                   </div>
 
@@ -42,9 +42,9 @@
         </header>
 
 
-        
+
         <div class="row gap-y">
-          
+
           <div class="col-12 offset-md-2 col-md-8 mb-30">
             <p class="text-center">
               {{ $series->description }}
@@ -54,7 +54,7 @@
 
       </div>
     </section>
-    
+
     <section class="section bg-gray">
         <div class="container">
           <header class="section-header">

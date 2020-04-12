@@ -12,5 +12,9 @@ class FrontendController extends Controller
         $series = Series::orderBy('created_at','DESC')->get();
         return view('welcome', compact('series'));
     }
+    public function series(Series $series)
+    {
+        return view('series', compact('series'));
+    }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use App\Lesson;
 use Illuminate\Support\Facades\Redis;
 
 trait Learning {
@@ -19,7 +20,23 @@ trait Learning {
     }
     public function getNumerOfCompletedLessonsForASeries($series)
     {
-        return count(Redis::smembers("user:{$this->id}:series:{$series->id}"));
+        return count($this->getCompletedLessonsForASeries($series));
+    }
+    public function hasStartedSeries($series)
+    {
+        return $this->getNumerOfCompletedLessonsForASeries($series) > 0 ;
+    }
+    public function getCompletedLessonsForASeries($series)
+    {
+        return Redis::smembers("user:{$this->id}:series:{$series->id}");
+    }
+    public function getCompletedLessons($series)
+    {
+        return Lesson::whereIn('id',
+            $this->getCompletedLessonsForASeries($series))
+            ->get();
+
+
     }
 
 }
