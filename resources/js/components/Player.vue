@@ -19,7 +19,20 @@
         methods: {
             displayVideoEndedAlert()
             {
-                Swal('Yaaay ! You completed this series !')
+                if(this.next_lesson_url) {
+                    Swal('Yaaay ! You completed this lesson !')
+                        .then(() => {
+                            window.location = this.next_lesson_url
+                        })
+                } else {
+                    Swal('Yaaay ! You completed this series !')
+                }
+            },
+            completeLesson() {
+                Axios.post(`/series/complete-lesson/${this.lesson.id}`, {})
+                    .then(resp => {
+                        this.displayVideoEndedAlert()
+                    })
             }
         }
         ,
@@ -27,7 +40,7 @@
             const player = new Player('handstick')
 
             player.on('ended', () =>{
-                this.displayVideoEndedAlert();
+                this.completeLesson();
             })
         }
     }
