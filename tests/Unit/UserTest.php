@@ -136,5 +136,76 @@ class UserTest extends TestCase
         //assert true for hasCompletedLesson() method
         $this->assertTrue(hasCompletedLesson($lesson));
     }
+    public function test_can_get_all_series_being_watched_by_user()
+    {
+        //user
+        $this->flushRedis();
+        $user = factory(User::class)->create();
+        //series => lessons
+        $lesson = factory(Lesson::class)->create();
+        $lesson2 = factory(Lesson::class)->create([
+            'series_id' => 1
+        ]);
+        $lesson3 = factory(Lesson::class)->create();
+        $lesson4 = factory(Lesson::class)->create([
+                'series_id' => 2
+        ]);
+        $lesson5 = factory(Lesson::class)->create();
+        $lesson6 = factory(Lesson::class)->create([
+            'series_id' => 3
+        ]);
+        //complete lesson 1, 2
+        $user->completeLesson($lesson);
+        $user->completeLesson($lesson3);
 
+        $statedSeries = $user->seriesBeingWatched();
+        $this->assertInstanceOf(Collection::class, $statedSeries);
+        $this->assertInstanceOf(Series::class, $statedSeries->random());
+        $idsOfStartedSeries = $statedSeries->pluck('id')->all();
+
+        $this->assertTrue(
+            in_array($lesson->series->id, $idsOfStartedSeries)
+        );
+        $this->assertTrue(
+            in_array($lesson3->series->id, $idsOfStartedSeries)
+        );
+        $this->assertFalse(
+            in_array($lesson6->series->id, $idsOfStartedSeries)
+        );
+    }
+    public function test_can_get_number_of_completed_lessons_for_a_user()
+    {
+        $this->flushRedis();
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        $lesson = factory(Lesson::class)->create();
+        $lesson2 = factory(Lesson::class)->create([ 'series_id' => 1 ]);
+        $lesson3 = factory(Lesson::class)->create();
+        $lesson4 = factory(Lesson::class)->create([ 'series_id' => 2 ]);
+        $lesson5 = factory(Lesson::class)->create();
+
+        $user->completeLesson($lesson);
+        $user->completeLesson($lesson3);
+        $user->completeLesson($lesson5);
+
+        $this->assertEquals(3, $user->getTotalNumberOfCompletedLessons());
+    }
+    public function test_can_get_next_lesson_to_be_watched_by_user(){
+        $this->flushRedis();
+        $user = factory(User::class)->create();
+        $this->actingAs($user);
+        $lesson = factory(Lesson::class)->create(['episode_number' => 100]);
+        $lesson2 = factory(Lesson::class)->create([ 'series_id' => 1, 'episode_number' => 200 ]);
+        $lesson3 = factory(Lesson::class)->create([ 'series_id' => 1, 'episode_number' => 300 ]);
+        $lesson4 = factory(Lesson::class)->create([ 'series_id' => 1, 'episode_number' => 400 ]);
+
+        $user->completeLesson($lesson);
+        $user->completeLesson($lesson2);
+
+        $nextLesson = $user->getNextLessonToWatch($lesson->series);
+        $this->assertEquals($lesson3->id, $nextLesson->id);
+        $user->completeLesson($lesson3);
+        $nextLesson = $user->getNextLessonToWatch($lesson3->series);
+        $this->assertEquals($lesson4->id, $nextLesson->id);
+    }
 }

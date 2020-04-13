@@ -7,11 +7,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Redis;
+use Laravel\Cashier\Billable;
 
 class User extends Authenticatable
 {
-    use Notifiable, Learning;
-
+    use Notifiable, Learning, Billable;
+    protected $with = ['subscriptions'];
     /**
      * The attributes that are mass assignable.
      *
@@ -35,6 +36,10 @@ class User extends Authenticatable
         return in_array($this->email, config('elearning.administrators'));
     }
 
+    public function getRouteKeyName()
+    {
+        return 'username';
+    }
     /**
      * The attributes that should be hidden for arrays.
      *

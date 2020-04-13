@@ -7,8 +7,8 @@
     <div class="row">
       <div class="col-12 col-lg-8 offset-lg-2">
 
-        <h1>Kati frantz</h1>
-        <p class="fs-20 opacity-70">kati-frantz</p>
+        <h1>{{$user->name}}</h1>
+        <p class="fs-20 opacity-70">{{$user->username}}</p>
         <br>
         <h1>{{ $user->getTotalNumberOfCompletedLessons() }}</h1>
         <p class="fs-20 opacity-70">Lessons completed</p>
@@ -39,7 +39,7 @@
                     <div class="col-12 col-md-8">
                     <div class="card-block">
                         <h4 class="card-title">{{ $s->title }}</h4>
-                    
+
                         <p class="card-text">{{ $s->description }}</p>
                         <a class="fw-600 fs-12" href="{{ route('series', $s->slug) }}">Read more <i class="fa fa-chevron-right fs-9 pl-8"></i></a>
                     </div>
@@ -53,12 +53,12 @@
 
 
     </div>
-</section>    
+</section>
 
 @if(auth()->id() === $user->id)
-@php 
+@php
 $subscription = auth()->user()->subscriptions->first();
-@endphp 
+@endphp
 <section class="section bg-gray" id="section-vtab">
     <div class="container">
         <header class="section-header">
@@ -68,7 +68,7 @@ $subscription = auth()->user()->subscriptions->first();
 
 
         <div class="row gap-5">
-        
+
 
         <div class="col-12 col-md-4">
             <ul class="nav nav-vertical">
@@ -88,14 +88,14 @@ $subscription = auth()->user()->subscriptions->first();
                 <h6>Card details</h6>
                 </a>
             </li>
-            @endif 
+            @endif
             </ul>
         </div>
 
 
         <div class="col-12 col-md-8 align-self-center">
             <div class="tab-content">
-            
+
             <div class="tab-pane fade show active" id="home-2">
                 <form action="{{ route('series.store')  }}" method="POST" enctype="multipart/form-data">
                         {{ csrf_field() }}
@@ -111,19 +111,19 @@ $subscription = auth()->user()->subscriptions->first();
             </div>
 
             <div class="tab-pane fade text-center" id="profile-2">
-                
+
             </div>
 
             <div class="tab-pane fade" id="messages-2">
                 <form action="{{ route('subscriptions.change') }}" method="post">
                     {{ csrf_field() }}
                     <h5 class="text-center">
-                        Your current plan: 
+                        Your current plan:
                         @if($subscription)
                         <span class="badge badge-success">{{ $subscription->stripe_plan }}</span>
-                        @else 
+                        @else
                         <span class="badge badge-danger">NO PLAN</span>
-                        @endif 
+                        @endif
                     </h5>
                     <br>
                     @if($subscription)
@@ -136,7 +136,7 @@ $subscription = auth()->user()->subscriptions->first();
                         <button class="btn btn-primary" type="submit">Change plan</button>
                     </p>
                     @endif
-                    
+
                 </form>
             </div>
 
@@ -151,7 +151,7 @@ $subscription = auth()->user()->subscriptions->first();
                     </p>
                 </div>
             </div>
-            @endif 
+            @endif
 
             </div>
         </div>

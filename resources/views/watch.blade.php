@@ -48,7 +48,7 @@
                 @endif
                 ">
                   @if(auth()->user()->hasCompletedLesson($l))
-                    <b><small>COMPLETED</small></b>
+                    <b><small class="pr-2 text-success">COMPLETED</small></b>
                   @endif
                   <a href="{{ route('series.watch', ['series' => $series->slug, 'lesson' => $l->id]) }}">{{ $l->title }}</a>
               </li>

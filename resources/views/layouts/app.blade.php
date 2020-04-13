@@ -36,9 +36,14 @@
                 <ul class="topbar-nav nav">
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                     @auth
+                        @admin
                         <li class="nav-item"><a class="nav-link" href="{{route('series.index')}}">All Series</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{route('series.create')}}">Create A Series</a></li>
-                        Hey {{auth()->user()->name}}
+                        @else
+
+                        @endadmin
+
+                        <li class="nav-item"><a class="nav-link" href="">Hey {{auth()->user()->name}}</a></li>
                     @else
 
 

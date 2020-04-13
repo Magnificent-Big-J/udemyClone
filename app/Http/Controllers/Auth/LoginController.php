@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -46,7 +46,13 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         session()->flash('success', 'Successfully logged in.');
-        return response()->json(['status'=>'ok']);
+        if (request()->ajax()) {
+            return response()->json([
+                'status' => 'ok'
+            ]);
+        }
+
+        return redirect('/');
     }
 
     protected function sendFailedLoginResponse(Request $request)

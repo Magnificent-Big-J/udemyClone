@@ -31,7 +31,7 @@ class Lesson extends Model
         $nextLesson = $this->series->lessons()->where('episode_number', '>', $this->episode_number)
             ->orderBy('episode_number', 'asc')
             ->first();
-        //dd($nextLesson);
+
         if($nextLesson) {
             return $nextLesson;
         }
